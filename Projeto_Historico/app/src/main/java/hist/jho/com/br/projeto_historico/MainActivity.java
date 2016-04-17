@@ -1,6 +1,29 @@
+/*
+ * Copyright (c) 2016. jhoanesfreitas
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *            http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
 package hist.jho.com.br.projeto_historico;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -16,7 +39,9 @@ import android.view.MenuItem;
 public class MainActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener{
 
- @Override
+ private CollapsingToolbarLayout collapsingToolbarLayout;
+
+ @TargetApi(Build.VERSION_CODES.JELLY_BEAN) @Override
  protected void onCreate(Bundle savedInstanceState){
   super.onCreate(savedInstanceState);
   setContentView(R.layout.activity_main);
@@ -35,8 +60,19 @@ public class MainActivity extends AppCompatActivity
   DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
   ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
       this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-  drawer.setDrawerListener(toggle);
+  drawer.addDrawerListener(toggle);
   toggle.syncState();
+
+  collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+  collapsingToolbarLayout.setTitle("Iuiuiu");
+  Resources icon = getResources();
+  @SuppressLint({ "NewApi", "LocalSuppress" }) Drawable drawable = icon.getDrawable(R.drawable.ic_camara, getTheme());
+  collapsingToolbarLayout.setBackground(drawable);
+  if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+   collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.holo_green_dark, getTheme()));
+   collapsingToolbarLayout.setContentScrimResource(R.mipmap.ic_camara);
+   collapsingToolbarLayout.setBackgroundResource(R.mipmap.ic_camara);
+  }
 
   NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
   navigationView.setNavigationItemSelectedListener(this);
