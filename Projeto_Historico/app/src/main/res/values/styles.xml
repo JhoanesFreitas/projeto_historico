@@ -14,7 +14,7 @@
   ~ permissions and limitations under the License.
   -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -37,6 +37,11 @@
         <item name="android:layout_width">@dimen/session_avatar_size</item>
         <item name="android:layout_height">@dimen/session_avatar_size</item>
         <item name="android:layout_marginLeft">@dimen/medium_margin</item>
+    </style>
+
+    <style name="CollapsingToolbarExpanded" parent="TextAppearance.Design.CollapsingToolbar.Expanded">
+        <item name="android:textSize">@dimen/text_size_toolbar</item>
+        <item name="android:textColor" tools:targetApi="m">@color/title_color2</item>
     </style>
 
 </resources>
