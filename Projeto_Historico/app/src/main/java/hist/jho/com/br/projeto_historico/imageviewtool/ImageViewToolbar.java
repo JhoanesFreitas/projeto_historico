@@ -14,15 +14,12 @@
  * permissions and limitations under the License.
  */
 
-package hist.jho.com.br.projeto_historico.ImageActivity;
+package hist.jho.com.br.projeto_historico.imageviewtool;
 
 import android.content.Context;
-import android.os.Build;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.util.AttributeSet;
 import android.widget.ImageView;
-
-import hist.jho.com.br.projeto_historico.R;
 
 /**
  * Created by jhoanesfreitas on 17/04/16.

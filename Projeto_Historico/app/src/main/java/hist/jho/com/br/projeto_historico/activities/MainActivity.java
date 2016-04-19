@@ -24,6 +24,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.LayoutRes;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -41,11 +42,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import hist.jho.com.br.projeto_historico.R;
+import hist.jho.com.br.projeto_historico.async.HistAsync;
+import hist.jho.com.br.projeto_historico.toast_trace.ToastTrace;
+
+import static hist.jho.com.br.projeto_historico.Constants.TIME_UPDATES_REFRESH;
 
 public class MainActivity extends AppCompatActivity
-    implements NavigationView.OnNavigationItemSelectedListener{
+    implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener{
 
   private CollapsingToolbarLayout collapsingToolbarLayout;
   private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -60,15 +66,15 @@ public class MainActivity extends AppCompatActivity
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
-    LayoutInflater inflater = LayoutInflater.from(this);
-    ViewGroup container = toolbar;
-    final View rootView = inflater.inflate(R.layout.content_main, container, false);
+    LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE); //LayoutInflater.from(this);
+    ViewGroup container = (ViewGroup) toolbar.getParent();
+    final View rootView = inflater.inflate(R.layout.app_bar_main, container, false);
 
     cardView1 = (CardView) rootView.findViewById(R.id.cardview1);
     cardView2 = (CardView) rootView.findViewById(R.id.cardview2);
     cardView3 = (CardView) rootView.findViewById(R.id.cardview3);
 
-    mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swiperefresh);
+    mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
 
     FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
     try{
@@ -111,42 +117,33 @@ public class MainActivity extends AppCompatActivity
       toolbar.setElevation(8);
     }
 
-    mSwipeRefreshLayout.setOnRefreshListener(
-        new SwipeRefreshLayout.OnRefreshListener(){
+    ToastTrace toastTrace = new ToastTrace(getBaseContext());
 
-          @Override public void onRefresh(){
-            refreshContent();
-            //mSwipeRefreshLayout.setRefreshing(false);
+    TextView textView = (TextView) rootView.findViewById(R.id.tvinfo);
+    toastTrace.trace(textView.getText().toString());
+    //textView.setEllipsize(TextUtils.TruncateAt.END);
+    mSwipeRefreshLayout.setOnRefreshListener(this);
 
-            /*try{
-              finalize();
-            } catch(Throwable throwable){
-              throwable.printStackTrace();
-            }*/
-          }
-
-          /*@Override protected void finalize() throws Throwable{
-            super.finalize();
-            mSwipeRefreshLayout.setRefreshing(true);
-          }*/
-        });
-
+    Log.d("Swipe", "onRefresh");
+    //mSwipeRefreshLayout.setColorSchemeColors(R.color.blue, R.color.red);
+    mSwipeRefreshLayout.setColorSchemeResources(R.color.blue, R.color.red);
+    Log.d("Swipe", "onRefresh1");
 
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
     navigationView.setNavigationItemSelectedListener(this);
   }
 
-  private void refreshContent(){
+  @Override public void onRefresh(){
     new Handler().postDelayed(new Runnable(){
       @Override
       public void run(){
-        mSwipeRefreshLayout.setRefreshing(false);
-
+        HistAsync histAsync = new HistAsync(getBaseContext(), mSwipeRefreshLayout);
+        histAsync.execute();
       }
+    }, TIME_UPDATES_REFRESH);
 
-    }, 100);
+    Log.d("Swipe", "onRefreshSwipe");
   }
-
 
   @Override
   public void onBackPressed(){

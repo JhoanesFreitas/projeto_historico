@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import hist.jho.com.br.projeto_historico.Constants;
 import hist.jho.com.br.projeto_historico.R;
 
 /**
@@ -35,13 +36,12 @@ public class SplashActivity extends Activity{
 
     if (!splashLoaded) {
       setContentView(R.layout.splash_activity);
-      int secondsDelayed = 1;
       new Handler().postDelayed(new Runnable() {
         public void run() {
           startActivity(new Intent(SplashActivity.this, MainActivity.class));
           finish();
         }
-      }, secondsDelayed * 500);
+      }, Constants.SECONDS_DELAYED);
 
       splashLoaded = true;
     }

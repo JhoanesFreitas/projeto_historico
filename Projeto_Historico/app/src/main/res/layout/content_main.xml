@@ -18,10 +18,13 @@
 <android.support.v4.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swiperefresh"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".activities.MainActivity"
+    tools:showIn="@layout/app_bar_main">
 
     <android.support.v4.widget.NestedScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -44,6 +47,7 @@
                 android:id="@+id/cardview1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
                 android:layout_margin="@dimen/card_margin">
 
                 <LinearLayout
@@ -52,12 +56,14 @@
                     android:layout_height="wrap_content">
 
                     <TextView
+                        android:id="@+id/tvinfo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Info"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
 
                     <TextView
+                        style="@style/TextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/large_text"/>
@@ -70,6 +76,7 @@
                 android:id="@+id/cardview2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
                 android:layout_marginBottom="@dimen/card_margin"
                 android:layout_marginLeft="@dimen/card_margin"
                 android:layout_marginRight="@dimen/card_margin">
@@ -86,6 +93,7 @@
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
 
                     <TextView
+                        style="@style/TextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/cheese_ipsum"/>
@@ -98,6 +106,7 @@
                 android:id="@+id/cardview3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
                 android:layout_marginBottom="@dimen/card_margin"
                 android:layout_marginLeft="@dimen/card_margin"
                 android:layout_marginRight="@dimen/card_margin">
@@ -114,6 +123,7 @@
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
 
                     <TextView
+                        style="@style/TextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/cheese_ipsum"/>
