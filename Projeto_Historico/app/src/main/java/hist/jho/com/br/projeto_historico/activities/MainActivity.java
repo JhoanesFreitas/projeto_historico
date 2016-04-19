@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-package hist.jho.com.br.projeto_historico;
+package hist.jho.com.br.projeto_historico.activities;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -23,9 +23,14 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -35,11 +40,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+
+import hist.jho.com.br.projeto_historico.R;
 
 public class MainActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener{
 
   private CollapsingToolbarLayout collapsingToolbarLayout;
+  private SwipeRefreshLayout mSwipeRefreshLayout;
+  private CardView cardView1;
+  private CardView cardView2;
+  private CardView cardView3;
 
   @TargetApi(Build.VERSION_CODES.JELLY_BEAN) @Override
   protected void onCreate(Bundle savedInstanceState){
@@ -48,14 +60,36 @@ public class MainActivity extends AppCompatActivity
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
+    LayoutInflater inflater = LayoutInflater.from(this);
+    ViewGroup container = toolbar;
+    final View rootView = inflater.inflate(R.layout.content_main, container, false);
+
+    cardView1 = (CardView) rootView.findViewById(R.id.cardview1);
+    cardView2 = (CardView) rootView.findViewById(R.id.cardview2);
+    cardView3 = (CardView) rootView.findViewById(R.id.cardview3);
+
+    mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swiperefresh);
+
     FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-    fab.setOnClickListener(new View.OnClickListener(){
-      @Override
-      public void onClick(View view){
-        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-            .setAction("Action", null).show();
-      }
-    });
+    try{
+      fab.setOnClickListener(new View.OnClickListener(){
+        @Override
+        public void onClick(View view){
+          Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+              .setAction("Action", null).show();
+        }
+      });
+    } catch(Exception e){
+      e.printStackTrace();
+    }
+
+    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+      cardView1.setElevation(8);
+      cardView2.setElevation(8);
+      cardView3.setElevation(8);
+      //cardView2.setCardElevation(88);
+      Log.d("card", "enter");
+    }
 
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -77,16 +111,42 @@ public class MainActivity extends AppCompatActivity
       toolbar.setElevation(8);
     }
 
+    mSwipeRefreshLayout.setOnRefreshListener(
+        new SwipeRefreshLayout.OnRefreshListener(){
 
-  /*if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-   collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent, getTheme()));
-   collapsingToolbarLayout.setContentScrimResource(R.mipmap.ic_camara);
-   collapsingToolbarLayout.setBackgroundResource(R.mipmap.ic_camara);
-  }*/
+          @Override public void onRefresh(){
+            refreshContent();
+            //mSwipeRefreshLayout.setRefreshing(false);
+
+            /*try{
+              finalize();
+            } catch(Throwable throwable){
+              throwable.printStackTrace();
+            }*/
+          }
+
+          /*@Override protected void finalize() throws Throwable{
+            super.finalize();
+            mSwipeRefreshLayout.setRefreshing(true);
+          }*/
+        });
+
 
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
     navigationView.setNavigationItemSelectedListener(this);
   }
+
+  private void refreshContent(){
+    new Handler().postDelayed(new Runnable(){
+      @Override
+      public void run(){
+        mSwipeRefreshLayout.setRefreshing(false);
+
+      }
+
+    }, 100);
+  }
+
 
   @Override
   public void onBackPressed(){
