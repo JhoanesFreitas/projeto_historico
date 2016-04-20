@@ -50,6 +50,7 @@ import android.widget.TextView;
 
 import hist.jho.com.br.projeto_historico.Constants;
 import hist.jho.com.br.projeto_historico.R;
+import hist.jho.com.br.projeto_historico.activities.settings_activity.SettingsActivity;
 import hist.jho.com.br.projeto_historico.async.HistAsync;
 import hist.jho.com.br.projeto_historico.toast_trace.ToastTrace;
 
@@ -233,7 +234,7 @@ public class MainActivity extends AppCompatActivity
     } else if(id == R.id.nav_slideshow){
 
     } else if(id == R.id.nav_manage){
-
+      startActivity(new Intent(MainActivity.this, SettingsActivity.class));
     } else if(id == R.id.nav_share){
 
     } else if(id == R.id.nav_send){
