@@ -16,6 +16,7 @@
 
 package hist.jho.com.br.projeto_historico.localization;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
@@ -56,10 +57,12 @@ public class Localization extends Service implements LocationListener{
 
   private LocationManager mLocationManager;
   private ToastTrace toastTrace;
+  private Activity mActivity;
 
-  public Localization(Context mContext){
+  public Localization(Context mContext, Activity mActivity){
     this.mContext = mContext;
     toastTrace = new ToastTrace(getmContext());
+    this.mActivity = mActivity;
     getLocation();
   }
 
@@ -74,6 +77,9 @@ public class Localization extends Service implements LocationListener{
 
       setNetworkEnable(mLocationManager
           .isProviderEnabled(LocationManager.NETWORK_PROVIDER));
+
+      Log.d("Error", mLocationManager
+          .isProviderEnabled(LocationManager.NETWORK_PROVIDER) + " ||");
 
       if(!isGPSEnable() && !isNetworkEnable()){
         Log.d("Error", "Error");
@@ -127,35 +133,6 @@ public class Localization extends Service implements LocationListener{
   public void stopUsingGPS(){
     if(getmLocationManager() != null){
       getmLocationManager().removeUpdates(Localization.this);
-    }
-  }
-
-  public void showSettingsAlert(){
-
-    try{
-      AlertDialog.Builder alBuilder = new AlertDialog.Builder(getmContext());
-
-      alBuilder.setTitle(TITLE);
-      alBuilder.setMessage(MSG);
-
-      alBuilder.setPositiveButton(R.string.action_settings,
-          new DialogInterface.OnClickListener(){
-            @Override public void onClick(DialogInterface dialog, int which){
-              Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-              getmContext().startActivity(intent);
-            }
-          });
-
-      alBuilder.setNegativeButton(CANCEL,
-          new DialogInterface.OnClickListener(){
-            @Override public void onClick(DialogInterface dialog, int which){
-              dialog.cancel();
-            }
-          });
-
-      alBuilder.show();
-    } catch(Exception e){
-      e.printStackTrace();
     }
   }
 

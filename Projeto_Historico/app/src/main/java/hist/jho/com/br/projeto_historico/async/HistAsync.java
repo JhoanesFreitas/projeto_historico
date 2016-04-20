@@ -16,13 +16,26 @@
 
 package hist.jho.com.br.projeto_historico.async;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Looper;
+import android.provider.Settings;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 
+import hist.jho.com.br.projeto_historico.Constants;
+import hist.jho.com.br.projeto_historico.R;
+import hist.jho.com.br.projeto_historico.activities.MainActivity;
 import hist.jho.com.br.projeto_historico.localization.Localization;
 import hist.jho.com.br.projeto_historico.toast_trace.ToastTrace;
+
+import static hist.jho.com.br.projeto_historico.Constants.CANCEL;
+import static hist.jho.com.br.projeto_historico.Constants.MSG;
+import static hist.jho.com.br.projeto_historico.Constants.TITLE;
 
 /**
  * Created by jhoanesfreitas on 19/04/16.
@@ -32,19 +45,21 @@ public class HistAsync extends AsyncTask<Void, Void, String>{
   private Context mContext;
   private SwipeRefreshLayout mSwipeRefreshLayout;
   private Localization mLocalization;
+  private Activity mActivity;
 
   private double latitude = 0;
   private double longitude = 0;
 
-  public HistAsync(Context context, SwipeRefreshLayout swipeRefreshLayout){
+  public HistAsync(Context context, SwipeRefreshLayout swipeRefreshLayout, Activity mActivity){
     setmContext(context);
     setmSwipeRefreshLayout(swipeRefreshLayout);
+    this.mActivity = mActivity;
     Log.d("OnPostExecute", "Constructor");
   }
 
   @Override protected void onPreExecute(){
     super.onPreExecute();
-    setmLocalization(new Localization(getmContext()));
+    setmLocalization(new Localization(getmContext(), mActivity));
     //mLocalization = new Localization(mContext);
     Log.d("OnPostExecute", "OnPreExecute");
   }
@@ -55,7 +70,9 @@ public class HistAsync extends AsyncTask<Void, Void, String>{
       setLatitude(getmLocalization().getmLatitude());
       setLongitude(getmLocalization().getmLongitude());
     }else {
-      getmLocalization().showSettingsAlert();
+      Constants.POP = true;
+      //Looper.prepare();
+      //getmLocalization().showSettingsAlert();
     }
     return null;
   }
@@ -68,6 +85,7 @@ public class HistAsync extends AsyncTask<Void, Void, String>{
     ToastTrace toastTrace = new ToastTrace(mContext);
     toastTrace.trace(getLatitude() + "\n" + getLongitude());
     getmLocalization().stopUsingGPS();
+    ((MainActivity) mActivity).isPop();
     Log.d("OnPostExecute", "Finish");
   }
 

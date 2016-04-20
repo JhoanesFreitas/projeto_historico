@@ -18,12 +18,16 @@ package hist.jho.com.br.projeto_historico.activities;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -44,11 +48,15 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import hist.jho.com.br.projeto_historico.Constants;
 import hist.jho.com.br.projeto_historico.R;
 import hist.jho.com.br.projeto_historico.async.HistAsync;
 import hist.jho.com.br.projeto_historico.toast_trace.ToastTrace;
 
+import static hist.jho.com.br.projeto_historico.Constants.CANCEL;
+import static hist.jho.com.br.projeto_historico.Constants.MSG;
 import static hist.jho.com.br.projeto_historico.Constants.TIME_UPDATES_REFRESH;
+import static hist.jho.com.br.projeto_historico.Constants.TITLE;
 
 public class MainActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener{
@@ -113,14 +121,14 @@ public class MainActivity extends AppCompatActivity
     collapsingToolbarLayout.setBackground(drawable);
 
     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-      collapsingToolbarLayout.setElevation(8);
-      toolbar.setElevation(8);
+      collapsingToolbarLayout.setElevation(99);
+      toolbar.setElevation(99);
     }
 
-    ToastTrace toastTrace = new ToastTrace(getBaseContext());
+    //ToastTrace toastTrace = new ToastTrace(getBaseContext());
 
-    TextView textView = (TextView) rootView.findViewById(R.id.tvinfo);
-    toastTrace.trace(textView.getText().toString());
+    //TextView textView = (TextView) rootView.findViewById(R.id.tvinfo);
+    //toastTrace.trace(textView.getText().toString());
     //textView.setEllipsize(TextUtils.TruncateAt.END);
     mSwipeRefreshLayout.setOnRefreshListener(this);
 
@@ -137,12 +145,47 @@ public class MainActivity extends AppCompatActivity
     new Handler().postDelayed(new Runnable(){
       @Override
       public void run(){
-        HistAsync histAsync = new HistAsync(getBaseContext(), mSwipeRefreshLayout);
+        HistAsync histAsync = new HistAsync(getBaseContext(), mSwipeRefreshLayout, MainActivity.this);
         histAsync.execute();
       }
     }, TIME_UPDATES_REFRESH);
-
     Log.d("Swipe", "onRefreshSwipe");
+  }
+
+  public void isPop(){
+    if(Constants.POP){
+      showSettingsAlert();
+      Constants.POP = false;
+    }
+  }
+
+  public void showSettingsAlert(){
+
+    try{
+      AlertDialog.Builder alBuilder = new AlertDialog.Builder(this);
+
+      alBuilder.setTitle(TITLE);
+      alBuilder.setMessage(MSG);
+
+      alBuilder.setPositiveButton(R.string.action_settings,
+          new DialogInterface.OnClickListener(){
+            @Override public void onClick(DialogInterface dialog, int which){
+              Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+              startActivity(intent);
+            }
+          });
+
+      alBuilder.setNegativeButton(CANCEL,
+          new DialogInterface.OnClickListener(){
+            @Override public void onClick(DialogInterface dialog, int which){
+              dialog.cancel();
+            }
+          });
+
+      alBuilder.show();
+    } catch(Exception e){
+      e.printStackTrace();
+    }
   }
 
   @Override

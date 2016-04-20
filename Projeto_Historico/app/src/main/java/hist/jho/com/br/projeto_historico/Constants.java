@@ -27,10 +27,11 @@ public class Constants{
   //Constants for gps
   public final static long MIN_DISTANCE_CHANCE_FOR_UPDATES = 10;
   public final static long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
-  public final static long TIME_UPDATES_REFRESH = 2000;
+  public final static long TIME_UPDATES_REFRESH = 2500;
   public final static String NOT_FOUND = "Nenhum provedor de rede está habilitado!";
   public final static String TITLE = "GPS is settings";
   public final static String MSG = "GPS não está habilitado! Habilite-o em Configurações!";
   public final static String CANCEL = "Cancel";
+  public static boolean POP = false;
 
 }
