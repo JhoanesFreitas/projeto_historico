@@ -14,26 +14,27 @@
  * permissions and limitations under the License.
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+package hist.jho.com.br.projeto_historico.model;
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0'
+import android.util.Log;
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-    }
-}
+/**
+ * Created by jhoanesfreitas on 20/04/16.
+ */
+public class ImageViewCard{
 
-allprojects {
-    repositories {
-        jcenter()
-    }
-}
+  private int photoId;
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+  public ImageViewCard(int photoId){
+    this.photoId = photoId;
+    Log.d("photo", "photo10");
+  }
+
+  public int getPhotoId(){
+    return photoId;
+  }
+
+  public void setPhotoId(int photoId){
+    this.photoId = photoId;
+  }
 }

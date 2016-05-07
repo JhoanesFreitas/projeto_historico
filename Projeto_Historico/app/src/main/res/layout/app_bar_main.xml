@@ -41,7 +41,6 @@
             app:expandedTitleMarginStart="48dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
@@ -66,7 +65,7 @@
     <include layout="@layout/content_main"/>
 
     <!--<android.support.v7.widget.RecyclerView
-        android:id="@+id/days_list_5"
+        android:id="@+id/rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -77,7 +76,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email"
+        android:src="@drawable/ic_grade_white_48dp"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"/>
 

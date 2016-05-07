@@ -28,12 +28,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
-import android.support.annotation.LayoutRes;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,16 +47,23 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import hist.jho.com.br.projeto_historico.Constants;
 import hist.jho.com.br.projeto_historico.R;
 import hist.jho.com.br.projeto_historico.activities.settings_activity.SettingsActivity;
+import hist.jho.com.br.projeto_historico.adapter.RecyclersViewAdapter;
+import hist.jho.com.br.projeto_historico.adapter.wrapping.layoutmanager.WrappingLinearLayoutManager;
 import hist.jho.com.br.projeto_historico.async.HistAsync;
-import hist.jho.com.br.projeto_historico.toast_trace.ToastTrace;
+import hist.jho.com.br.projeto_historico.model.ImageViewCard;
 
 import static hist.jho.com.br.projeto_historico.Constants.CANCEL;
 import static hist.jho.com.br.projeto_historico.Constants.MSG;
+import static hist.jho.com.br.projeto_historico.Constants.SECONDS_DELAYED;
 import static hist.jho.com.br.projeto_historico.Constants.TIME_UPDATES_REFRESH;
 import static hist.jho.com.br.projeto_historico.Constants.TITLE;
 
@@ -67,6 +75,10 @@ public class MainActivity extends AppCompatActivity
   private CardView cardView1;
   private CardView cardView2;
   private CardView cardView3;
+  private CardView cardViewImage;
+  private RecyclerView recyclerView;
+  private List<ImageViewCard> imagesCard;
+  private ImageView imageView;
 
   @TargetApi(Build.VERSION_CODES.JELLY_BEAN) @Override
   protected void onCreate(Bundle savedInstanceState){
@@ -82,6 +94,11 @@ public class MainActivity extends AppCompatActivity
     cardView1 = (CardView) rootView.findViewById(R.id.cardview1);
     cardView2 = (CardView) rootView.findViewById(R.id.cardview2);
     cardView3 = (CardView) rootView.findViewById(R.id.cardview3);
+    recyclerView = (RecyclerView) rootView.findViewById(R.id.rv);
+    cardViewImage = (CardView) rootView.findViewById(R.id.card_view_Image);
+    cardViewImage.setPreventCornerOverlap(false);
+    recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+    imageView = (ImageView) rootView.findViewById(R.id.person_photo);
 
     mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
 
@@ -126,20 +143,34 @@ public class MainActivity extends AppCompatActivity
       toolbar.setElevation(99);
     }
 
-    //ToastTrace toastTrace = new ToastTrace(getBaseContext());
-
-    //TextView textView = (TextView) rootView.findViewById(R.id.tvinfo);
-    //toastTrace.trace(textView.getText().toString());
-    //textView.setEllipsize(TextUtils.TruncateAt.END);
     mSwipeRefreshLayout.setOnRefreshListener(this);
 
     Log.d("Swipe", "onRefresh");
-    //mSwipeRefreshLayout.setColorSchemeColors(R.color.blue, R.color.red);
     mSwipeRefreshLayout.setColorSchemeResources(R.color.blue, R.color.red);
     Log.d("Swipe", "onRefresh1");
 
+    gridGallery();
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
     navigationView.setNavigationItemSelectedListener(this);
+  }
+
+  private void gridGallery(){
+    recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+    //recyclerView.setLayoutManager(new WrappingLinearLayoutManager(this));
+    recyclerView.setHasFixedSize(false);
+    initializeData();
+    //recyclerView.setNestedScrollingEnabled(false);
+    RecyclersViewAdapter adapter = new RecyclersViewAdapter(imagesCard);
+    //RecyclersViewAdapter.setListViewHeightBasedOnChildren();
+    recyclerView.setAdapter(adapter);
+    //recyclerView.setNestedScrollingEnabled(false);
+  }
+
+  private void initializeData(){
+    imagesCard = new ArrayList<>();
+    imagesCard.add(new ImageViewCard(R.drawable.ic_camara));
+    imagesCard.add(new ImageViewCard(R.drawable.side_nav_bar));
+    imagesCard.add(new ImageViewCard(R.drawable.ic_camara));
   }
 
   @Override public void onRefresh(){
@@ -187,6 +218,33 @@ public class MainActivity extends AppCompatActivity
     } catch(Exception e){
       e.printStackTrace();
     }
+  }
+
+  public void textScreen(View view){
+
+    TextView mTextView = (TextView) view;
+
+    int id = checkId(mTextView);
+    TextView mTextViewTitle = (TextView) findViewById(id);
+
+    Intent intent = new Intent(MainActivity.this, TextViewActivity.class);
+
+    intent.putExtra(Constants.TEXT_ACTIVITY, mTextView.getText().toString());
+    intent.putExtra(Constants.TEXT_ACTIVITY_TITLE, mTextViewTitle.getText().toString());
+    startActivity(intent);
+  }
+
+  private int checkId(TextView textView){
+    switch(textView.getId()){
+
+      case R.id.tv1:
+        return R.id.tvinfo1;
+      case R.id.tv2:
+        return R.id.tvinfo2;
+      case R.id.tv3:
+        return R.id.tvinfo3;
+    }
+    return -1;
   }
 
   @Override
@@ -246,3 +304,4 @@ public class MainActivity extends AppCompatActivity
     return true;
   }
 }
+

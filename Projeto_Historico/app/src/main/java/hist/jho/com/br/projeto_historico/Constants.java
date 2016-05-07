@@ -32,6 +32,9 @@ public class Constants{
   public final static String TITLE = "GPS is settings";
   public final static String MSG = "GPS não está habilitado! Habilite-o em Configurações!";
   public final static String CANCEL = "Cancel";
+  public final static String TEXT_ACTIVITY = "text_activity";
+  public final static String TEXT_ACTIVITY_TITLE = "text_title";
   public static boolean POP = false;
+
 
 }

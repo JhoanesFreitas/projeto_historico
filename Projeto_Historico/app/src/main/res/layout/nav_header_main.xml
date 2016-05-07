@@ -41,7 +41,7 @@
         app:border_width="2dp"
         app:border_color="@color/avatar_border"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:src="@android:drawable/sym_def_app_icon"
+        android:src="@mipmap/ic_account_circle_white_48dp"
         />
 
     <TextView
