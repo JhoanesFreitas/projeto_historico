@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity
   private CardView cardView1;
   private CardView cardView2;
   private CardView cardView3;
+  private CardView cardViewGallery;
   private CardView cardViewImage;
   private RecyclerView recyclerView;
   private List<ImageViewCard> imagesCard;
@@ -93,14 +94,16 @@ public class MainActivity extends AppCompatActivity
     LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE); //LayoutInflater.from(this);
     ViewGroup container = (ViewGroup) toolbar.getParent();
     final View rootView = inflater.inflate(R.layout.app_bar_main, container, false);
+    final View rootView2 = inflater.inflate(R.layout.item_card_images, container, false);
 
     cardView1 = (CardView) rootView.findViewById(R.id.cardview1);
     cardView2 = (CardView) rootView.findViewById(R.id.cardview2);
     cardView3 = (CardView) rootView.findViewById(R.id.cardview3);
+    cardViewGallery = (CardView) rootView2.findViewById(R.id.cV_Gallery);
     //recyclerView = (RecyclerView) rootView.findViewById(R.id.rv);
-    /*cardViewImage = (CardView) rootView.findViewById(R.id.card_view_Image);
-    cardViewImage.setPreventCornerOverlap(false);
-    recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));*/
+    //cardViewImage = (CardView) rootView.findViewById(R.id.card_view_Image);
+    //cardViewImage.setPreventCornerOverlap(false);
+    //recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     //imageView = (ImageView) rootView.findViewById(R.id.person_photo);
 
     mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
@@ -119,9 +122,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-/*      cardView1.setElevation(8);
+      cardView1.setElevation(8);
       cardView2.setElevation(8);
-      cardView3.setElevation(8);*/
+      cardView3.setElevation(8);
+      cardViewGallery.setElevation(8);
       //cardView2.setCardElevation(88);
       Log.d("card", "enter");
     }
@@ -138,18 +142,18 @@ public class MainActivity extends AppCompatActivity
     collapsingToolbarLayout.setExpandedTitleColor(Color.CYAN);
     collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.CollapsingToolbarExpanded);
     Resources icon = getResources();
-    /*@SuppressLint({ "NewApi", "LocalSuppress" }) Drawable drawable = icon.getDrawable(R.drawable.ic_camara, getTheme());
-    collapsingToolbarLayout.setBackground(drawable);*/
+    @SuppressLint({ "NewApi", "LocalSuppress" }) Drawable drawable = icon.getDrawable(R.drawable.ic_camara, getTheme());
+    collapsingToolbarLayout.setBackground(drawable);
 
     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
       collapsingToolbarLayout.setElevation(99);
       toolbar.setElevation(99);
     }
 
-//    mSwipeRefreshLayout.setOnRefreshListener(this);
+    mSwipeRefreshLayout.setOnRefreshListener(this);
 
     Log.d("Swipe", "onRefresh");
-   // mSwipeRefreshLayout.setColorSchemeResources(R.color.blue, R.color.red);
+    mSwipeRefreshLayout.setColorSchemeResources(R.color.blue, R.color.red);
     Log.d("Swipe", "onRefresh1");
 
     //gridGallery();

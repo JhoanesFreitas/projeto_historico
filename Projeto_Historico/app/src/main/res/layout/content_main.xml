@@ -127,6 +127,7 @@
                 android:layout_below="@+id/tb_main"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:elevation="8dp"
                 android:layout_above="@+id/inc_tb_bottom">
             </RelativeLayout>
 
