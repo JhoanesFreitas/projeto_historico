@@ -25,6 +25,8 @@
                                     android:id="@+id/cV_Gallery"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
+                                    android:layout_marginTop="@dimen/card_margin"
+                                    android:paddingTop="0dp"
                                     android:clickable="true"
                                     android:elevation="8dp"
                                     app:cardElevation="8dp">
@@ -33,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
+        <!--<TextView
             android:id="@+id/tv_model"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,19 +44,18 @@
             android:text="Galeria"
             android:layout_alignParentTop="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            />
+            />-->
 
         <ImageView
-            android:layout_alignParentBottom="true"
             android:id="@+id/iv_car"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingRight="@dimen/card_margin"
-            android:paddingLeft="@dimen/card_margin"
+            android:paddingRight="@dimen/card_margin2"
+            android:paddingLeft="@dimen/card_margin2"
             android:paddingBottom="0dp"
-            android:layout_below="@id/tv_model"
             android:src="@drawable/ic_menu_camera" />
-
+        <!--android:layout_below="@id/tv_model"
+        android:layout_alignParentBottom="true"-->
 
         <!--<TextView
             android:textColor="@color/colorPrimary"

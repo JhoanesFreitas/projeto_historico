@@ -29,6 +29,7 @@
 
     <dimen name="text_size_toolbar">32dp</dimen>
     <dimen name="card_margin">16dp</dimen>
+    <dimen name="card_margin2">10dp</dimen>
 
     <dimen name="margin_top_scroll">32dp</dimen>
 
