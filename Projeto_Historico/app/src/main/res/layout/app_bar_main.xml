@@ -48,7 +48,7 @@
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
-            <hist.jho.com.br.projeto_historico.imageviewtool.ImageViewToolbar
+            <!--<hist.jho.com.br.projeto_historico.imageviewtool.ImageViewToolbar
                 android:id="@+id/image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -56,7 +56,9 @@
                 app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
                 android:fitsSystemWindows="true"
                 app:layout_collapseMode="parallax"
-                android:minHeight="100dp"/>
+                android:minHeight="100dp"/>-->
+
+            <!--<include layout="@layout/fragment_images"/>-->
 
         </android.support.design.widget.CollapsingToolbarLayout>
 

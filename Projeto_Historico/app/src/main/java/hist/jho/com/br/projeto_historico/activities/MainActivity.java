@@ -31,10 +31,12 @@ import android.provider.Settings;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,6 +61,7 @@ import hist.jho.com.br.projeto_historico.activities.settings_activity.SettingsAc
 import hist.jho.com.br.projeto_historico.adapter.RecyclersViewAdapter;
 import hist.jho.com.br.projeto_historico.adapter.wrapping.layoutmanager.WrappingLinearLayoutManager;
 import hist.jho.com.br.projeto_historico.async.HistAsync;
+import hist.jho.com.br.projeto_historico.fragments.Fragment_Images;
 import hist.jho.com.br.projeto_historico.model.ImageViewCard;
 
 import static hist.jho.com.br.projeto_historico.Constants.CANCEL;
@@ -94,11 +97,11 @@ public class MainActivity extends AppCompatActivity
     cardView1 = (CardView) rootView.findViewById(R.id.cardview1);
     cardView2 = (CardView) rootView.findViewById(R.id.cardview2);
     cardView3 = (CardView) rootView.findViewById(R.id.cardview3);
-    recyclerView = (RecyclerView) rootView.findViewById(R.id.rv);
-    cardViewImage = (CardView) rootView.findViewById(R.id.card_view_Image);
+    //recyclerView = (RecyclerView) rootView.findViewById(R.id.rv);
+    /*cardViewImage = (CardView) rootView.findViewById(R.id.card_view_Image);
     cardViewImage.setPreventCornerOverlap(false);
-    recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-    imageView = (ImageView) rootView.findViewById(R.id.person_photo);
+    recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));*/
+    //imageView = (ImageView) rootView.findViewById(R.id.person_photo);
 
     mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
 
@@ -116,9 +119,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-      cardView1.setElevation(8);
+/*      cardView1.setElevation(8);
       cardView2.setElevation(8);
-      cardView3.setElevation(8);
+      cardView3.setElevation(8);*/
       //cardView2.setCardElevation(88);
       Log.d("card", "enter");
     }
@@ -135,21 +138,32 @@ public class MainActivity extends AppCompatActivity
     collapsingToolbarLayout.setExpandedTitleColor(Color.CYAN);
     collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.CollapsingToolbarExpanded);
     Resources icon = getResources();
-    @SuppressLint({ "NewApi", "LocalSuppress" }) Drawable drawable = icon.getDrawable(R.drawable.ic_camara, getTheme());
-    collapsingToolbarLayout.setBackground(drawable);
+    /*@SuppressLint({ "NewApi", "LocalSuppress" }) Drawable drawable = icon.getDrawable(R.drawable.ic_camara, getTheme());
+    collapsingToolbarLayout.setBackground(drawable);*/
 
     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
       collapsingToolbarLayout.setElevation(99);
       toolbar.setElevation(99);
     }
 
-    mSwipeRefreshLayout.setOnRefreshListener(this);
+//    mSwipeRefreshLayout.setOnRefreshListener(this);
 
     Log.d("Swipe", "onRefresh");
-    mSwipeRefreshLayout.setColorSchemeResources(R.color.blue, R.color.red);
+   // mSwipeRefreshLayout.setColorSchemeResources(R.color.blue, R.color.red);
     Log.d("Swipe", "onRefresh1");
 
-    gridGallery();
+    //gridGallery();
+
+    Fragment_Images frag = (Fragment_Images) getSupportFragmentManager().findFragmentByTag("mainFrag");
+    if(frag == null) {
+      frag = new Fragment_Images();
+      FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+      View view = inflater.inflate(R.layout.content_main, container, false);
+      View inflater1 =  view.findViewById(R.id.rl_fragment_container);
+      ft.replace(inflater1.getId(), frag, "mainFrag");
+      ft.commit();
+    }
+
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
     navigationView.setNavigationItemSelectedListener(this);
   }
@@ -298,10 +312,23 @@ public class MainActivity extends AppCompatActivity
     } else if(id == R.id.nav_send){
 
     }
-
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
     drawer.closeDrawer(GravityCompat.START);
     return true;
   }
+
+  public List<ImageViewCard> getSetCarList(int qtd){
+    String[] models = new String[]{"Gallardo", "Vyron", "Corvette", "Pagani Zonda", "Porsche 911 Carrera", "BMW 720i", "DB77", "Mustang", "Camaro", "CT6"};
+    String[] brands = new String[]{"Lamborghini", " bugatti", "Chevrolet", "Pagani", "Porsche", "BMW", "Aston Martin", "Ford", "Chevrolet", "Cadillac"};
+    int[] photos = new int[]{R.drawable.ic_camara, R.drawable.ic_menu_camera, R.drawable.ic_camara, R.drawable.ic_menu_camera, R.drawable.ic_camara, R.drawable.ic_camara, R.drawable.ic_camara, R.drawable.ic_camara, R.drawable.ic_camara, R.drawable.ic_camara};
+    List<ImageViewCard> listAux = new ArrayList<>();
+
+    for(int i = 0; i < qtd; i++){
+      ImageViewCard c = new ImageViewCard(photos[i % models.length]);
+      listAux.add(c);
+    }
+    return(listAux);
+  }
+
 }
 
