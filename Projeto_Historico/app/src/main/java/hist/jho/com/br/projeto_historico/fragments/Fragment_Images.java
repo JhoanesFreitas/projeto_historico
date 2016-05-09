@@ -16,6 +16,10 @@
 
 package hist.jho.com.br.projeto_historico.fragments;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -30,12 +34,15 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import hist.jho.com.br.projeto_historico.R;
+import hist.jho.com.br.projeto_historico.activities.GalleryImagesActivity;
 import hist.jho.com.br.projeto_historico.activities.MainActivity;
 import hist.jho.com.br.projeto_historico.adapter.RecyclersViewAdapter;
 import hist.jho.com.br.projeto_historico.interfaces.RecyclerViewOnClickListenerHack;
+import hist.jho.com.br.projeto_historico.model.ImageModelGallery;
 import hist.jho.com.br.projeto_historico.model.ImageViewCard;
 
 /**
@@ -45,6 +52,15 @@ public class Fragment_Images extends Fragment implements RecyclerViewOnClickList
 
   private RecyclerView mRecyclerView;
   private List<ImageViewCard> mImageList;
+  private Activity mActivity;
+
+  public Activity getmActivity(){
+    return mActivity;
+  }
+
+  public void setmActivity(Activity mActivity){
+    this.mActivity = mActivity;
+  }
 
   @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
@@ -52,7 +68,7 @@ public class Fragment_Images extends Fragment implements RecyclerViewOnClickList
 
     mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_list);
     mRecyclerView.setHasFixedSize(true);
-    mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener(){
+    mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
 
       @Override public void onScrollStateChanged(RecyclerView recyclerView, int newState){
         super.onScrollStateChanged(recyclerView, newState);
@@ -91,7 +107,9 @@ public class Fragment_Images extends Fragment implements RecyclerViewOnClickList
 
 
   @Override public void onClickListener(View view, int position){
-    Toast.makeText(getActivity(), "onClickListener(): " + position, Toast.LENGTH_SHORT).show();
+    //Toast.makeText(getActivity(), "onClickListener(): " + position, Toast.LENGTH_SHORT).show();
+    //getActivity().startActivity(getActivity().getIntent(), GalleryImagesActivity);
+    getActivity().startActivity(new Intent(getActivity(), GalleryImagesActivity.class));
   }
 
   @Override public void onLongPressClickListener(View view, int position){

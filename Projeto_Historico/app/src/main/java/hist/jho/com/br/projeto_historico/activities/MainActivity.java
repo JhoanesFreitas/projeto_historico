@@ -159,6 +159,7 @@ public class MainActivity extends AppCompatActivity
     //gridGallery();
 
     Fragment_Images frag = (Fragment_Images) getSupportFragmentManager().findFragmentByTag("mainFrag");
+ //   frag.setmActivity(this);
     if(frag == null) {
       frag = new Fragment_Images();
       FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

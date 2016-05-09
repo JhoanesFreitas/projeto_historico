@@ -65,10 +65,10 @@ public class RecyclersViewAdapter extends RecyclerView.Adapter<RecyclersViewAdap
     Log.d("photo", "photo1");
   }
 
-  public RecyclersViewAdapter(Context c, List<ImageViewCard> l){
-    mContext = c;
-    imagesView = l;
-    mLayoutInflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+  public RecyclersViewAdapter(Context context, List<ImageViewCard> cardList){
+    mContext = context;
+    imagesView = cardList;
+    mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
     scale = mContext.getResources().getDisplayMetrics().density;
     width = mContext.getResources().getDisplayMetrics().widthPixels - (int)(14 * scale + 0.5f);
@@ -164,7 +164,7 @@ public class RecyclersViewAdapter extends RecyclerView.Adapter<RecyclersViewAdap
 
     @Override public void onClick(View v){
       if(mRecyclerViewOnClickListenerHack != null){
-        mRecyclerViewOnClickListenerHack.onClickListener(v, getPosition());
+        mRecyclerViewOnClickListenerHack.onClickListener(v, getLayoutPosition());
       }
     }
   }
