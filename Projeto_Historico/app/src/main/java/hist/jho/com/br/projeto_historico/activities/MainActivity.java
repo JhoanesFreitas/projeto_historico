@@ -100,11 +100,6 @@ public class MainActivity extends AppCompatActivity
     cardView2 = (CardView) rootView.findViewById(R.id.cardview2);
     cardView3 = (CardView) rootView.findViewById(R.id.cardview3);
     cardViewGallery = (CardView) rootView2.findViewById(R.id.cV_Gallery);
-    //recyclerView = (RecyclerView) rootView.findViewById(R.id.rv);
-    //cardViewImage = (CardView) rootView.findViewById(R.id.card_view_Image);
-    //cardViewImage.setPreventCornerOverlap(false);
-    //recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-    //imageView = (ImageView) rootView.findViewById(R.id.person_photo);
 
     mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
 

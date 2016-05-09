@@ -16,6 +16,10 @@
 
 package hist.jho.com.br.projeto_historico.activities;
 
+import android.annotation.TargetApi;
+import android.graphics.Color;
+import android.os.Build;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -26,9 +30,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -58,7 +64,8 @@ public class DetailGalleryActivity extends AppCompatActivity{
   private ViewPager mViewPager;
   protected ArrayList<ImageModelGallery> data = new ArrayList<>();
   protected int pos;
-
+  private boolean status = false;
+  private int statusAux = 0;
 
   @Override
   protected void onCreate(Bundle savedInstanceState){
@@ -68,15 +75,52 @@ public class DetailGalleryActivity extends AppCompatActivity{
     data = getIntent().getParcelableArrayListExtra("data");
     pos = getIntent().getIntExtra("pos", 0);
 
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    final AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
+    final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
     toolbar.setTitle(data.get(pos).getName());
+    toolbar.setTitleTextColor(Color.WHITE);
+    toolbar.setSubtitleTextColor(Color.WHITE);
+    //toolbar.setVisibility(View.VISIBLE);
+    //toolbar.setBackgroundColor(Color.TRANSPARENT);
     setSupportActionBar(toolbar);
+
+    toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+    //appBarLayout.setVisibility(View.VISIBLE);
     // Create the adapter that will return a fragment for each of the three
     // primary sections of the activity.
     mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
     // Set up the ViewPager with the sections adapter.
     mViewPager = (ViewPager) findViewById(R.id.container);
+
+    //mViewPager.onInterceptTouchEvent();
+    mViewPager.setOnTouchListener(new View.OnTouchListener(){
+      @TargetApi(Build.VERSION_CODES.M) @Override public boolean onTouch(View v, MotionEvent event){
+
+        /*if(mViewPager.isTransitionGroup()){
+          Log.d("st", "st");
+          if(!status){
+            appBarLayout.setVisibility(View.VISIBLE);
+            toolbar.setVisibility(View.VISIBLE);
+            //if(statusAux == 3)
+              status = !status;
+          } else{
+            appBarLayout.setVisibility(View.GONE);
+            toolbar.setVisibility(View.GONE);
+            status = !status;
+          }
+        }*/
+        return false;
+      }
+    });
+
+    /*mViewPager.setOnClickListener(new ViewPager.OnClickListener(){
+      @Override public void onClick(View v){
+        Log.d("click", "click");
+      }
+    });*/
+
     mViewPager.setAdapter(mSectionsPagerAdapter);
 
     setTitle(toolbar);
@@ -90,6 +134,11 @@ public class DetailGalleryActivity extends AppCompatActivity{
       }
     });
 
+  }
+
+  @Override public void onBackPressed(){
+    super.onBackPressed();
+    finish();
   }
 
   private void setTitle(final Toolbar mTitle){
@@ -125,6 +174,8 @@ public class DetailGalleryActivity extends AppCompatActivity{
     //noinspection SimplifiableIfStatement
     if(id == R.id.action_settings){
       return true;
+    } else if(id == android.R.id.home){
+      finish();
     }
 
     return super.onOptionsItemSelected(item);
@@ -212,7 +263,8 @@ public class DetailGalleryActivity extends AppCompatActivity{
       return fragment;
     }
 
-    public PlaceholderFragment(){}
+    public PlaceholderFragment(){
+    }
 
     @Override public void setArguments(Bundle args){
       super.setArguments(args);
@@ -225,8 +277,8 @@ public class DetailGalleryActivity extends AppCompatActivity{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
       View rootView = inflater.inflate(R.layout.fragment_detail_gallery, container, false);
-      TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-      textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+      /*TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+      textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));*/
 
       ImageView imageView = (ImageView) rootView.findViewById(R.id.detail_image);
       Glide.with(getActivity()).load(id).into(imageView);
