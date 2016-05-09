@@ -32,7 +32,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -142,7 +145,8 @@ public class DetailGalleryActivity extends AppCompatActivity{
     public Fragment getItem(int position){
       // getItem is called to instantiate the fragment for the given page.
       // Return a PlaceholderFragment (defined as a static inner class below).
-      return PlaceholderFragment.newInstance(position + 1);
+      return PlaceholderFragment.newInstance(position, data.get(position).getName(),
+          data.get(position).getPhotoId());//PlaceholderFragment.newInstance(position + 1);
     }
 
     @Override
@@ -153,15 +157,20 @@ public class DetailGalleryActivity extends AppCompatActivity{
 
     @Override
     public CharSequence getPageTitle(int position){
-      switch(position){
+
+      if(!data.isEmpty())
+        return data.get(position).getName();
+
+      return null;
+
+      /*switch(position){
         case 0:
           return "SECTION 1";
         case 1:
           return "SECTION 2";
         case 2:
           return "SECTION 3";
-      }
-      return null;
+      }*/
     }
   }
 
@@ -172,7 +181,12 @@ public class DetailGalleryActivity extends AppCompatActivity{
     /**
      * The fragment argument representing the section number for this fragment.
      */
-    private static final String ARG_SECTION_NUMBER = "section_number";
+    private static final String ARG_SECTION_NUMBER = "pos";
+    private static final String ARG_SECTION_NAME = "section_number";
+    private static final String ARG_SECTION_ID = "section_number";
+    private int pos;
+    private int id;
+    private String name;
 
     /**
      * Returns a new instance of this fragment for the given section number.
@@ -188,15 +202,24 @@ public class DetailGalleryActivity extends AppCompatActivity{
     /**
      * Returns a new instance of this fragment for the given section number.
      */
-    public static PlaceholderFragment newInstance(int sectionNumber, int l){
+    public static PlaceholderFragment newInstance(int sectionNumber, String name, int id){
       PlaceholderFragment fragment = new PlaceholderFragment();
       Bundle args = new Bundle();
       args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+      args.putString(ARG_SECTION_NAME, name);
+      args.putInt(ARG_SECTION_ID, id);
       fragment.setArguments(args);
       return fragment;
     }
 
     public PlaceholderFragment(){}
+
+    @Override public void setArguments(Bundle args){
+      super.setArguments(args);
+      this.pos = args.getInt(ARG_SECTION_NUMBER);
+      this.name = args.getString(ARG_SECTION_NAME);
+      this.id = args.getInt(ARG_SECTION_ID);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -204,6 +227,10 @@ public class DetailGalleryActivity extends AppCompatActivity{
       View rootView = inflater.inflate(R.layout.fragment_detail_gallery, container, false);
       TextView textView = (TextView) rootView.findViewById(R.id.section_label);
       textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+
+      ImageView imageView = (ImageView) rootView.findViewById(R.id.detail_image);
+      Glide.with(getActivity()).load(id).into(imageView);
+
       return rootView;
     }
   }
