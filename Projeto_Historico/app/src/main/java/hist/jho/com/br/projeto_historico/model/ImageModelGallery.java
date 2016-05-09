@@ -16,15 +16,36 @@
 
 package hist.jho.com.br.projeto_historico.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by jhoanesfreitas on 08/05/16.
  */
-public class ImageModelGallery{
+public class ImageModelGallery implements Parcelable{
 
   private String name, url;
   private int photoId;
 
   public ImageModelGallery(){}
+
+  protected ImageModelGallery(Parcel in){
+    name = in.readString();
+    url = in.readString();
+    photoId = in.readInt();
+  }
+
+  public static final Creator<ImageModelGallery> CREATOR = new Creator<ImageModelGallery>(){
+    @Override
+    public ImageModelGallery createFromParcel(Parcel in){
+      return new ImageModelGallery(in);
+    }
+
+    @Override
+    public ImageModelGallery[] newArray(int size){
+      return new ImageModelGallery[size];
+    }
+  };
 
   public String getName(){
     return name;
@@ -48,5 +69,15 @@ public class ImageModelGallery{
 
   public void setPhotoId(int photoId){
     this.photoId = photoId;
+  }
+
+  @Override public int describeContents(){
+    return 0;
+  }
+
+  @Override public void writeToParcel(Parcel dest, int flags){
+    dest.writeString(name);
+    dest.writeString(url);
+    dest.writeInt(photoId);
   }
 }

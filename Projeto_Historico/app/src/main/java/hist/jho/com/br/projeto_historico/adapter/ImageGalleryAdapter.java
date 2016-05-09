@@ -15,6 +15,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 
 import java.util.List;
 
@@ -65,6 +67,12 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .into(((ImageViewHolderGallery) holder).personPhoto);
 
+    /*try{
+      YoYo.with(Techniques.Tada)
+          .duration(700)
+          .playOn(holder.itemView);
+    }
+    catch(Exception e){}*/
 
     /*if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
       holder.personPhoto.setImageResource(imagesView.get(position).getPhotoId());

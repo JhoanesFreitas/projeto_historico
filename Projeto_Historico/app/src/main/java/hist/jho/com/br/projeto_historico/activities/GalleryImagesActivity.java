@@ -16,22 +16,29 @@
 
 package hist.jho.com.br.projeto_historico.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import android.view.View;
 
 import java.util.ArrayList;
 
 import hist.jho.com.br.projeto_historico.R;
 import hist.jho.com.br.projeto_historico.adapter.ImageGalleryAdapter;
+import hist.jho.com.br.projeto_historico.interfaces.RecyclerViewOnClickListenerHack;
 import hist.jho.com.br.projeto_historico.model.ImageModelGallery;
 
 /**
  * Created by jhoanesfreitas on 08/05/16.
  */
-public class GalleryImagesActivity extends AppCompatActivity{
+public class GalleryImagesActivity extends AppCompatActivity implements RecyclerViewOnClickListenerHack{
 
   private RecyclerView mRecyclerView;
   ArrayList<ImageModelGallery> data = new ArrayList<>();
@@ -71,5 +78,70 @@ public class GalleryImagesActivity extends AppCompatActivity{
     mRecyclerView.setHasFixedSize(true); // Helps improve performance
     mAdapter = new ImageGalleryAdapter(GalleryImagesActivity.this, data);
     mRecyclerView.setAdapter(mAdapter);
+
+    mRecyclerView.addOnItemTouchListener(new RecyclerViewTouchListener(getApplicationContext(), mRecyclerView, this));
   }
+
+  @Override public void onClickListener(View view, int position){
+    Intent intent = new Intent(getApplicationContext(), DetailGalleryActivity.class);
+    intent.putParcelableArrayListExtra("data", data);
+    intent.putExtra("pos", position);
+    Log.d("rv", "rv");
+    startActivity(intent);
+  }
+
+  @Override public void onLongPressClickListener(View view, int position){
+
+  }
+
+  private static class RecyclerViewTouchListener implements RecyclerView.OnItemTouchListener{
+    private Context mContext;
+    private GestureDetector mGestureDetector;
+    private RecyclerViewOnClickListenerHack mRecyclerViewOnClickListenerHack;
+
+    public RecyclerViewTouchListener(Context c, final RecyclerView rv, RecyclerViewOnClickListenerHack rvoclh){
+      mContext = c;
+      mRecyclerViewOnClickListenerHack = rvoclh;
+
+      mGestureDetector = new GestureDetector(mContext, new GestureDetector.SimpleOnGestureListener(){
+        @Override
+        public void onLongPress(MotionEvent e){
+          super.onLongPress(e);
+
+          View cv = rv.findChildViewUnder(e.getX(), e.getY());
+
+          if(cv != null && mRecyclerViewOnClickListenerHack != null){
+            mRecyclerViewOnClickListenerHack.onLongPressClickListener(cv,
+                rv.getChildPosition(cv));
+          }
+        }
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent e){
+          View cv = rv.findChildViewUnder(e.getX(), e.getY());
+
+          if(cv != null && mRecyclerViewOnClickListenerHack != null){
+            mRecyclerViewOnClickListenerHack.onClickListener(cv,
+                rv.getChildPosition(cv));
+          }
+
+          return (true);
+        }
+      });
+    }
+
+    @Override public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e){
+      mGestureDetector.onTouchEvent(e);
+      return false;
+    }
+
+    @Override public void onTouchEvent(RecyclerView rv, MotionEvent e){
+
+    }
+
+    @Override public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept){
+
+    }
+  }
+
 }
